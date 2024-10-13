@@ -4,10 +4,9 @@
 
 from datetime import datetime
 from flask import Flask,render_template,request,redirect,url_for,session
-import config
 import bbdd
 import funciones
-import msg_telegram
+
 
 app=Flask(__name__)
 app.secret_key='mysecret_key'
@@ -58,26 +57,6 @@ def finanzas():
 @app.route('/direccion') 
 def direccion(): 
     return render_template('direccion.html')
-
-@app.route('/user') 
-def user():        
-     return redirect(url_for('usuario'))
-
-
-@app.route('/usuario', methods=["GET", "POST"]) 
-def usuario(): 
-  if request.method=="POST":  
-     print('post')   
-     adm_id=request.form['adm_d']
-     adm_Pa=request.form['adm_p'] 
-     print('adm_id='+adm_id,'adm_Pa='+adm_Pa)
-     '''adm_conf=funciones.adm_verificacion(parada,adm_id,adm_Pa)
-     if adm_conf: 
-      fecha = datetime.strftime(datetime.now(),"%Y %m %d - %H:%M:%S")
-      informacion=funciones.info_parada(parada)
-      datos=funciones.aportacion(parada) 
-      cabecera=funciones.info_cabecera(parada)
-      return render_template('user.html',informacion=informacion,datos=datos,cabecera=cabecera,fecha=fecha) '''
 
 
 @app.route('/administrar') 
@@ -162,7 +141,7 @@ def editar_miembro():
                                     
 @app.route("/data_cuotas", methods=["GET","POST"])
 def data_cuotas():
-    my_list=[];suma_no=[];suma_si=[];resta_hoy=[];suma_hoy=[]
+    my_list=[];suma_no=[];suma_si=[]
     if request.method == 'POST':
        hoy = request.form['time']
        cant=request.form['numero']
@@ -187,24 +166,12 @@ def data_cuotas():
         suma_no=num[0]    
        print(suma_no)
        
-       query=f"SELECT COUNT(estado) FROM {parada}_cuota WHERE estado = 'no_pago' AND fecha='{hoy}'"   
-       suma=bbdd.consultar_db(query)
-       for num in suma:
-         resta_hoy=num[0] 
-       
-       
        
        query=f"SELECT COUNT(estado) FROM {parada}_cuota WHERE estado = 'pago' "   
        sumas=bbdd.consultar_db(query)  
        for numb in sumas:
            suma_si=numb[0]
-        
-     
-       query=f"SELECT COUNT(estado) FROM {parada}_cuota WHERE estado = 'pago' AND fecha='{hoy}' "   
-       sumas=bbdd.consultar_db(query)  
-       for numb in sumas:
-           suma_hoy=numb[0]      
-      
+            
          
        n_aporte=int(suma_si) * float(valor_cuota)
        n_pendiente=int(suma_no) * float(valor_cuota)
@@ -290,9 +257,7 @@ def data_prestamos():
 
     if request.method == 'POST':            
        n_prestamos=[] 
-       fecha_c=datetime.strftime(datetime.now(),"%Y_%m_%d")
-       hoy=request.form['time']
-       tipo=request.form['tipo']                
+       hoy=request.form['time']               
        prestamo = request.form['descripcion_p'] 
        monto = request.form['cantidad_p']
        
@@ -364,7 +329,6 @@ def data_abonos():
 
 @app.route("/diario_pdf", methods=['GET','POST'])
 def finanza():
-    finanza=funciones.diario_general(parada)
     return redirect(url_for('data_confirmacion')) 
 
 @app.route("/list_miembros_pdf", methods=['GET','POST'])
@@ -413,10 +377,7 @@ def msg():
     if request.method=="POST":
         nombre=request.form['nombre']
         correo=request.form['correo']
-        telefono=request.form['telefono']
-        mensaje=f"El Señor(a) {nombre} con correo electronico {correo} y telefono {telefono} desea comunicarse con la ADMINISTRADORA"
-        msg_telegram.send_telegram(mensaje,config.chat_id,config.tokenBot)
-    
+        telefono=request.form['telefono']    
     return redirect(url_for('login'))
 
 
