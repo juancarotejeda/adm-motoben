@@ -5,6 +5,12 @@ connection = pymysql.connect(host='sql3.freesqldatabase.com',
                              password='crnvx7PylZ',
                              database='sql3737576')
 
+
+
+
+
+
+
 def modificar_db(query):
     cursor= connection.cursor()  
     cursor.execute(query)     
