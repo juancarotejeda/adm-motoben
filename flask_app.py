@@ -19,7 +19,8 @@ def login():
     query="SELECT nombre FROM tabla_index" 
     n_paradax=bbdd.consultar_db(query)
     for paradax in n_paradax:
-          n_paradas+=paradax              
+          n_paradas+=paradax
+    print(n_paradas)                    
     return render_template('login.html',n_paradas=n_paradas)
 
 @app.route("/new_data", methods=["GET", "POST"])
@@ -380,8 +381,6 @@ def msg():
         telefono=request.form['telefono']    
     return redirect(url_for('login'))
 
-if __name__ == '__main__':
-    app.run(debug=False)
 
 
 

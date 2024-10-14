@@ -14,5 +14,5 @@ conn_params_2= {
     "password":contraseña_2,
     "host":host_2 ,
     "port":puerto_2,
-    "database":basedatos_2
+    "database":basedatos_2,
 } 

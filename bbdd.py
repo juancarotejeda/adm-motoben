@@ -1,17 +1,18 @@
 
-import config
 import pymysql.cursors
+connection = pymysql.connect(host='sql3.freesqldatabase.com',
+                             user='sql3737576',
+                             password='crnvx7PylZ',
+                             database='sql3737576')
 
 def modificar_db(query):
-    coneccion=pymysql.connect(**config.conn_params_2)
-    cursor= coneccion.cursor()  
+    cursor= connection.cursor()  
     cursor.execute(query)     
-    coneccion.commit()
+    connection.commit()
     return
 
 def consultar_db(query):
-    conection=pymysql.connect(**config.conn_params_2)
-    cursor= conection.cursor()
+    cursor= connection.cursor()
     cursor.execute(query)
     Result= cursor.fetchall() 
-    return Result    
+    return Result       
