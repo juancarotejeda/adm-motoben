@@ -1,17 +1,17 @@
-import mariadb
+
 import config
+import pymysql.cursors
 
 def modificar_db(query):
-    coneccion= mariadb.connect(**config.conn_params)
+    coneccion=pymysql.connect(**config.conn_params_2)
     cursor= coneccion.cursor()  
     cursor.execute(query)     
     coneccion.commit()
-    return 
+    return
 
-    
 def consultar_db(query):
-    connection= mariadb.connect(**config.conn_params)
-    cursor= connection.cursor()
+    conection=pymysql.connect(**config.conn_params_2)
+    cursor= conection.cursor()
     cursor.execute(query)
     Result= cursor.fetchall() 
-    return Result
+    return Result    
